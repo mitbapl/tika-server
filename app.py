@@ -3,7 +3,7 @@ import subprocess, uuid, os
 
 app = Flask(__name__)
 
-@app.route('/extract', methods=['POST'])
+@app.route('/analyze', methods=['POST'])
 def extract():
     if 'file' not in request.files:
         return jsonify({'error': 'No PDF uploaded'}), 400
