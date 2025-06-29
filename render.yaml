@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: tika-server
+    env: docker
+    plan: free
+    repo: https://github.com/mitbapl/tika-server
+    branch: main
+    dockerContext: .
+    dockerfilePath: Dockerfile
+    autoDeploy: true
