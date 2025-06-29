@@ -3,7 +3,11 @@ import subprocess, uuid, os
 
 app = Flask(__name__)
 
-@app.route('/analyze', methods=['POST'])
+@app.route("/", methods=["GET"])
+def home():
+    return "✅ Tika Server is running. Use POST /analyze to upload a PDF.", 200
+
+@app.route('/analyze', methods=['POST'])  # <- matches your app's request
 def analyze():
     if 'file' not in request.files:
         return jsonify({'error': 'No PDF uploaded'}), 400
@@ -16,7 +20,8 @@ def analyze():
         result = subprocess.run(["java", "-jar", "tika-app.jar", "-t", filename],
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE,
-                                text=True)
+                                text=True,
+                                timeout=300)  # 5 minute timeout
         os.remove(filename)
         if result.returncode != 0:
             return jsonify({'error': result.stderr}), 500
@@ -25,6 +30,5 @@ def analyze():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == "__main__":
-    import os
     port = int(os.environ.get("PORT", 9998))
     app.run(host="0.0.0.0", port=port)
