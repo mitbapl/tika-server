@@ -3,12 +3,8 @@ import subprocess, uuid, os
 
 app = Flask(__name__)
 
-@app.route('/')
-def index():
-    return "Tika Server is running. Use POST /extract to upload a PDF."
-
-@app.route('/extract', methods=['POST'])
-def extract():
+@app.route('/analyze', methods=['POST'])
+def analyze():
     if 'file' not in request.files:
         return jsonify({'error': 'No PDF uploaded'}), 400
 
@@ -17,8 +13,10 @@ def extract():
     file.save(filename)
 
     try:
-        result = subprocess.run(["java", "-jar", "tika-app.jar", "-t", filename],
-                                stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, timeout=30)
+        result = subprocess.run(
+            ["java", "-jar", "tika-app.jar", "-t", filename],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, timeout=30
+        )
         os.remove(filename)
         if result.returncode != 0:
             return jsonify({'error': result.stderr}), 500
