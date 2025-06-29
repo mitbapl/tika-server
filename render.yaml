@@ -3,8 +3,7 @@ services:
     name: tika-server
     env: docker
     plan: free
-    repo: https://github.com/mitbapl/tika-server
-    branch: main
-    dockerContext: .
+    region: oregon
     dockerfilePath: Dockerfile
+    branch: master
     autoDeploy: true
