@@ -5,10 +5,11 @@ app = Flask(__name__)
 
 @app.route("/", methods=["GET"])
 def home():
-    return "✅ Tika Server is running. Use POST /analyze to upload a PDF.", 200
+    return "Tika Server is running. Use POST /analyze to upload a PDF.", 200
 
-@app.route('/analyze', methods=['POST'])  # <- matches your app's request
+@app.route('/analyze', methods=['POST'])  
 def analyze():
+    print("Received request at /analyze") 
     if 'file' not in request.files:
         return jsonify({'error': 'No PDF uploaded'}), 400
 
