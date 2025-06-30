@@ -12,7 +12,7 @@ def analyze():
     print("Received request at /analyze")
 
     if 'file' not in request.files:
-        print("❌ No file found in request")
+        print("No file found in request")
         return jsonify({'error': 'No PDF uploaded'}), 400
 
     file = request.files['file']
